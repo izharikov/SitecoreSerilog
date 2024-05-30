@@ -2,8 +2,8 @@
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Events;
-using Sitecore.Data.Items;
 using SitecoreSerilog.Enrichers;
+using SitecoreSerilog.Options;
 
 namespace SitecoreSerilog.Extensions
 {
@@ -24,16 +24,14 @@ namespace SitecoreSerilog.Extensions
                 ? enrichmentConfiguration.With(new FuncEnricher(name, func))
                 : throw new ArgumentNullException(nameof(enrichmentConfiguration));
         }
-
+        
         public static LoggerConfiguration WithSitecoreContext(
-            this LoggerEnrichmentConfiguration enrichmentConfiguration, LogEventLevel minLevel,
-            (string name, Func<Item> itemFunc)[]? additionalItems = null,
-            (string name, Func<object> contextObjectFunc)[]? additionalContextObjects = null)
+            this LoggerEnrichmentConfiguration enrichmentConfiguration, Action<SitecoreContextEnricherOptions> extend, SitecoreContextEnricherOptions? options = null)
         {
+            var computedOptions = options ?? SitecoreContextEnricherOptions.Default;
+            extend(computedOptions);
             return enrichmentConfiguration != null
-                ? enrichmentConfiguration.With(new SitecoreContextEnricher(minLevel,
-                    additionalItems ?? [],
-                    additionalContextObjects ?? []))
+                ? enrichmentConfiguration.With(new SitecoreContextEnricher(computedOptions))
                 : throw new ArgumentNullException(nameof(enrichmentConfiguration));
         }
 

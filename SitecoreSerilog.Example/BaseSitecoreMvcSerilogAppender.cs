@@ -1,8 +1,6 @@
-﻿using System;
-using Serilog;
+﻿using Serilog;
 using Serilog.Events;
 using Sitecore.Configuration;
-using Sitecore.Data.Items;
 using Sitecore.Mvc.Presentation;
 using SitecoreSerilog.Appenders;
 using SitecoreSerilog.Extensions;
@@ -24,18 +22,20 @@ namespace SitecoreSerilog.Example
                     .Enrich.WithProcessName()
                     .Enrich.WithThreadId()
                     .Enrich.WithMemoryUsage()
-                    .Enrich.WithSitecoreContext(
-                        minLevel: LogEventLevel.Error,
-                        additionalItems: new (string, Func<Item>)[]
-                        {
-                            ("PageItem", () => PageContext.CurrentOrNull?.Item),
-                            ("Datasource", () => RenderingContext.CurrentOrNull?.Rendering?.Item),
-                        },
-                        additionalContextObjects: new (string name, Func<object> contextObjectFunc)[]
-                        {
-                            ("RenderingId", () => RenderingContext.CurrentOrNull?.Rendering?.Id.ToString()),
-                        }
-                    )
+                    .Enrich.WithSitecoreContext(options =>
+                    {
+                        options.MinLevel = LogEventLevel.Error;
+                        options
+                            .WithItem("PageItem", () => PageContext.CurrentOrNull?.Item)
+                            .WithItem("Datasource", () => RenderingContext.CurrentOrNull?.Rendering?.Item)
+                            .WithContextOption(Constants.OptionNames.Context,
+                                context =>
+                                {
+                                    context.WithProperty("RenderingId",
+                                        () => RenderingContext.CurrentOrNull?.Rendering?.Id.ToString());
+                                })
+                            ;
+                    })
                     .Enrich.WithHttpContext(LogEventLevel.Error)
                 ;
         }

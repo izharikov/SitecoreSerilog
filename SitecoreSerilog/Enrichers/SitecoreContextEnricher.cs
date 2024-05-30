@@ -2,85 +2,66 @@
 using System.Collections.Generic;
 using Serilog.Core;
 using Serilog.Events;
+using Sitecore.Data;
 using Sitecore.Data.Items;
+using SitecoreSerilog.Options;
 
 namespace SitecoreSerilog.Enrichers
 {
     public class SitecoreContextEnricher : ILogEventEnricher
     {
-        private readonly LogEventLevel _minLevel;
-        private readonly (string name, Func<Item> itemFunc)[] _additionalItems;
-        private readonly (string name, Func<object> contextObjectFunc)[] _additionalContextObjects;
+        private readonly SitecoreContextEnricherOptions _options;
 
-        public SitecoreContextEnricher(LogEventLevel minLevel, (string name, Func<Item> itemFunc)[] additionalItems,
-            (string name, Func<object> contextObjectFunc)[] additionalContextObjects)
+        public SitecoreContextEnricher(SitecoreContextEnricherOptions options)
         {
-            _minLevel = minLevel;
-            _additionalItems = additionalItems;
-            _additionalContextObjects = additionalContextObjects;
+            _options = options;
         }
-        
+
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
-            if (logEvent.Level < _minLevel)
+            if (logEvent.Level < _options.MinLevel)
             {
                 return;
             }
-            
-            var contextItem = Sitecore.Context.Item;
-            
+
+
             var sitecore = new Dictionary<string, object>();
-            
-            AddSitecoreItemEnrich(contextItem, "ContextItem");
-            foreach (var (name, itemFunc) in _additionalItems)
+
+            var itemUris = new HashSet<ItemUri>();
+            foreach (var kv in _options.Items)
             {
-                var item = itemFunc();
-                if (contextItem?.Uri != item?.Uri)
+                var item = kv.Value();
+                if (item != null && (!_options.DistinctItems || itemUris.Add(item.Uri)))
                 {
-                    AddSitecoreItemEnrich(item, name);
+                    AddSitecoreItemEnrich(kv.Value(), kv.Key);
                 }
             }
-            
-            dynamic scContext = new
-            {
-                Site = Sitecore.Context.Site?.Name,
-                Language = Sitecore.Context.Language?.Name,
-                Database = Sitecore.Context.Database?.Name,
-            };
 
-            foreach (var (name, contextObjectFunc) in _additionalContextObjects)
+            foreach (var contextOptions in _options.ContextOptions)
             {
-                scContext[name] = contextObjectFunc();
-            }
-
-            sitecore["Context"] = scContext;
-            
-            sitecore["User"] = new
-            {
-                IsAuthenticated = Sitecore.Context.User?.IsAuthenticated,
-                Username = Sitecore.Context.User?.Name,
-            };
-            
-            var job = Sitecore.Context.Job;
-            if (job != null)
-            {
-                sitecore["Job"] = new
+                if (contextOptions.Condition != null && !contextOptions.Condition())
                 {
-                    Name = job.Name,
-                    State = job.Status?.State.ToString(),
-                };
+                    continue;
+                }
+                var result = new Dictionary<string, object?>();
+                foreach (var property in contextOptions.Properties)
+                {
+                    result[property.Key] = property.Value();
+                }
+
+                sitecore[contextOptions.PropertyName] = result;
             }
-            
-            logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("SC", sitecore, true));
+
+            logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty(_options.PropertyName, sitecore, true));
             return;
-            
+
             void AddSitecoreItemEnrich(Item? item, string name)
             {
                 if (item == null)
                 {
                     return;
                 }
-                
+
                 sitecore[name] = new
                 {
                     Id = item.ID.ToString(),
