@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net471</TargetFramework>
-        <PackageId>SitecoreSend.SDK</PackageId>
+        <PackageId>SitecoreSerilog</PackageId>
         <Description>Sitecore Serilog wrapper</Description>
         <Authors>Igor Zharikov</Authors>
         <Company>Brimit</Company>

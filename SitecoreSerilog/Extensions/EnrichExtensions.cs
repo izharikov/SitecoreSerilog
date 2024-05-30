@@ -1,5 +1,4 @@
-﻿using System;
-using log4net.helpers;
+﻿using log4net.helpers;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Events;
@@ -28,13 +27,13 @@ namespace SitecoreSerilog.Extensions
 
         public static LoggerConfiguration WithSitecoreContext(
             this LoggerEnrichmentConfiguration enrichmentConfiguration, LogEventLevel minLevel,
-            (string name, Func<Item> itemFunc)[] additionalItems = null,
-            (string name, Func<object> contextObjectFunc)[] additionalContextObjects = null)
+            (string name, Func<Item> itemFunc)[]? additionalItems = null,
+            (string name, Func<object> contextObjectFunc)[]? additionalContextObjects = null)
         {
             return enrichmentConfiguration != null
                 ? enrichmentConfiguration.With(new SitecoreContextEnricher(minLevel,
-                    additionalItems ?? Array.Empty<(string, Func<Item>)>(),
-                    additionalContextObjects ?? Array.Empty<(string, Func<object>)>()))
+                    additionalItems ?? [],
+                    additionalContextObjects ?? []))
                 : throw new ArgumentNullException(nameof(enrichmentConfiguration));
         }
 

@@ -74,7 +74,7 @@ namespace SitecoreSerilog.Enrichers
             logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty("SC", sitecore, true));
             return;
             
-            void AddSitecoreItemEnrich(Item item, string name)
+            void AddSitecoreItemEnrich(Item? item, string name)
             {
                 if (item == null)
                 {

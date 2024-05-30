@@ -1,5 +1,4 @@
-﻿using System;
-using log4net.Appender;
+﻿using log4net.Appender;
 using log4net.spi;
 using Serilog;
 using Serilog.Core;
@@ -12,8 +11,8 @@ namespace SitecoreSerilog.Appenders
 {
     public abstract class BaseSitecoreSerilogAppender : BufferingAppenderSkeleton
     {
-        public string MinimumLevel { get; set; }
-        private Logger _serilogLogger;
+        public string? MinimumLevel { get; set; }
+        private Logger? _serilogLogger;
 
         protected override void SendBuffer(LoggingEvent[] events)
         {
@@ -30,14 +29,14 @@ namespace SitecoreSerilog.Appenders
 
         protected override bool RequiresLayout => true;
 
-        private void LogEvent(ILogger log, LoggingEvent loggingEvent)
+        private void LogEvent(ILogger? log, LoggingEvent loggingEvent)
         {
             try
             {
                 var message = RenderLoggingEvent(loggingEvent);
                 var level = GetLogEventLevel(loggingEvent.Level.ToString());
                 var exception = loggingEvent.GetException();
-                log.Write(level, exception, message);
+                log?.Write(level, exception, message);
             }
             catch (Exception ex)
             {
@@ -45,10 +44,10 @@ namespace SitecoreSerilog.Appenders
             }
         }
 
-        private static LogEventLevel GetLogEventLevel(string level, LogEventLevel defaultValue = LogEventLevel.Debug)
+        private static LogEventLevel GetLogEventLevel(string? level, LogEventLevel defaultValue = LogEventLevel.Debug)
         {
             var logEventLevel = defaultValue;
-            switch (level.ToLowerInvariant())
+            switch (level?.ToLowerInvariant())
             {
                 case "debug":
                     logEventLevel = LogEventLevel.Debug;

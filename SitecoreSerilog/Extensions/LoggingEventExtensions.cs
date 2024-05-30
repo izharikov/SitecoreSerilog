@@ -7,9 +7,9 @@ namespace SitecoreSerilog.Extensions
 {
     internal static class LoggingEventExtensions
     {
-        private static Invoker _invoker;
+        private static Invoker? _invoker;
 
-        public static Exception GetException(this LoggingEvent loggingEvent)
+        public static Exception? GetException(this LoggingEvent loggingEvent)
         {
             if (string.IsNullOrEmpty(loggingEvent.GetExceptionStrRep()))
             {
@@ -21,7 +21,7 @@ namespace SitecoreSerilog.Extensions
             return invoker?.Invoke(loggingEvent);
         }
 
-        private static Invoker GetInvoker()
+        private static Invoker? GetInvoker()
         {
             if (_invoker != null)
             {
@@ -47,6 +47,6 @@ namespace SitecoreSerilog.Extensions
             return _invoker;
         }
 
-        private delegate Exception Invoker(LoggingEvent target);
+        private delegate Exception? Invoker(LoggingEvent target);
     }
 }
