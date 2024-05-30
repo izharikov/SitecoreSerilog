@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net471</TargetFramework>
+        <PackageId>SitecoreSend.SDK</PackageId>
+        <Description>Sitecore Serilog wrapper</Description>
+        <Authors>Igor Zharikov</Authors>
+        <Company>Brimit</Company>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>12</LangVersion>
+        <PackageReadmeFile>.\README.MD</PackageReadmeFile>
+        <PackageTags>Sitecore;Logging</PackageTags>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\README.MD" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+        <PackageReference Include="Serilog" Version="2.8.0"/>
+        <PackageReference Include="Serilog.Exceptions" Version="8.4.0"/>
+        <PackageReference Include="Sitecore.Kernel" Version="9.1.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Enrichers\"/>
+    </ItemGroup>
+
+</Project>

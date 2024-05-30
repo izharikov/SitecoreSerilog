@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitecoreSerilog", "SitecoreSerilog\SitecoreSerilog.csproj", "{F2F2C0E6-10C6-4992-9E36-CF0B036235CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitecoreSerilog.Example", "SitecoreSerilog.Example\SitecoreSerilog.Example.csproj", "{05830AFF-E9FA-4ACA-A83C-1C570CD3F566}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F2F2C0E6-10C6-4992-9E36-CF0B036235CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2F2C0E6-10C6-4992-9E36-CF0B036235CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2F2C0E6-10C6-4992-9E36-CF0B036235CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2F2C0E6-10C6-4992-9E36-CF0B036235CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05830AFF-E9FA-4ACA-A83C-1C570CD3F566}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05830AFF-E9FA-4ACA-A83C-1C570CD3F566}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05830AFF-E9FA-4ACA-A83C-1C570CD3F566}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05830AFF-E9FA-4ACA-A83C-1C570CD3F566}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

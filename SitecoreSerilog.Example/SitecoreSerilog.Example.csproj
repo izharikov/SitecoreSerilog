@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net471</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SitecoreSerilog\SitecoreSerilog.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Sitecore.Mvc" Version="9.1.0" />
+      <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
+      <PackageReference Include="Serilog.Enrichers.Memory" Version="1.0.4" />
+      <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.2" />
+      <PackageReference Include="Serilog.Sinks.Seq" Version="3.0.0" />
+    </ItemGroup>
+
+</Project>
