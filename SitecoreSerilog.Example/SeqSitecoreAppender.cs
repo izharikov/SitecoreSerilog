@@ -10,7 +10,7 @@ namespace SitecoreSerilog.Example
         protected override LoggerConfiguration WriteTo(LoggerConfiguration configuration)
         {
             return configuration
-                .WriteTo.Seq(SeqHost, apiKey: ApiKey, batchPostingLimit: BufferSize);
+                .WriteTo.Seq(SeqHost, apiKey: ApiKey);
         }
 
         protected override bool ValidateConfiguration()

@@ -3,46 +3,35 @@ using log4net.spi;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
+#if !NET452
 using Serilog.Exceptions;
+#endif
 using SitecoreSerilog.Extensions;
-using ILogger = Serilog.ILogger;
 
 namespace SitecoreSerilog.Appenders
 {
-    public abstract class BaseSitecoreSerilogAppender : BufferingAppenderSkeleton
+    public abstract class BaseSitecoreSerilogAppender : AppenderSkeleton
     {
         public string? MinimumLevel { get; set; }
         private Logger? _serilogLogger;
 
-        protected override void SendBuffer(LoggingEvent[] events)
-        {
-            if (_serilogLogger == null)
-            {
-                return;
-            }
-
-            foreach (var thisEvent in events)
-            {
-                LogEvent(_serilogLogger, thisEvent);
-            }
-        }
-
-        protected override bool RequiresLayout => true;
-
-        private void LogEvent(ILogger? log, LoggingEvent loggingEvent)
+        protected override void Append(LoggingEvent loggingEvent)
         {
             try
             {
                 var message = RenderLoggingEvent(loggingEvent);
                 var level = GetLogEventLevel(loggingEvent.Level.ToString());
                 var exception = loggingEvent.GetException();
-                log?.Write(level, exception, message);
+                _serilogLogger?.Write(level, exception, message);
+                AfterWrite(level, exception, message);
             }
             catch (Exception ex)
             {
                 ErrorHandler.Error("Error occurred while logging the event.", ex);
             }
         }
+
+        protected override bool RequiresLayout => true;
 
         private static LogEventLevel GetLogEventLevel(string? level, LogEventLevel defaultValue = LogEventLevel.Debug)
         {
@@ -68,7 +57,7 @@ namespace SitecoreSerilog.Appenders
 
             return logEventLevel;
         }
-        
+
         public override void ActivateOptions()
         {
             base.ActivateOptions();
@@ -76,20 +65,32 @@ namespace SitecoreSerilog.Appenders
             {
                 return;
             }
+
             var loggerConfig = new LoggerConfiguration()
-                .MinimumLevel
-                .ControlledBy(new LoggingLevelSwitch(GetLogEventLevel(MinimumLevel, LogEventLevel.Information)))
-                .Enrich.WithExceptionDetails()
+                    .MinimumLevel
+                    .ControlledBy(new LoggingLevelSwitch(GetLogEventLevel(MinimumLevel, LogEventLevel.Information)))
+#if !NET452
+                    .Enrich.WithExceptionDetails()
+#endif
                 ;
             loggerConfig = Enrich(loggerConfig);
             loggerConfig = WriteTo(loggerConfig);
             _serilogLogger = loggerConfig.CreateLogger();
+            AfterActivateOptions(_serilogLogger);
         }
-        
+
         public override void OnClose()
         {
             base.OnClose();
             _serilogLogger?.Dispose();
+        }
+
+        protected virtual void AfterWrite(LogEventLevel level, Exception? exception, string messageTemplate)
+        {
+        }
+
+        protected virtual void AfterActivateOptions(Logger logger)
+        {
         }
 
         protected abstract LoggerConfiguration Enrich(LoggerConfiguration configuration);
