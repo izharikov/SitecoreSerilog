@@ -3,9 +3,7 @@ using log4net.spi;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
-#if !NET452
 using Serilog.Exceptions;
-#endif
 using SitecoreSerilog.Extensions;
 
 namespace SitecoreSerilog.Appenders
@@ -69,9 +67,7 @@ namespace SitecoreSerilog.Appenders
             var loggerConfig = new LoggerConfiguration()
                     .MinimumLevel
                     .ControlledBy(new LoggingLevelSwitch(GetLogEventLevel(MinimumLevel, LogEventLevel.Information)))
-#if !NET452
                     .Enrich.WithExceptionDetails()
-#endif
                 ;
             loggerConfig = Enrich(loggerConfig);
             loggerConfig = WriteTo(loggerConfig);

@@ -29,6 +29,7 @@
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
+        <PackageReference Include="Serilog.Exceptions" Version="4.1.0" />
         <PackageReference Include="Sitecore.Kernel">
             <Version>8.2.180406</Version>
             <PrivateAssets>all</PrivateAssets>
