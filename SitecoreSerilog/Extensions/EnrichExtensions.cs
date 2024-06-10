@@ -24,6 +24,13 @@ namespace SitecoreSerilog.Extensions
                 ? enrichmentConfiguration.With(new FuncEnricher(name, func))
                 : throw new ArgumentNullException(nameof(enrichmentConfiguration));
         }
+
+        public static LoggerConfiguration WithSitecoreContext(
+            this LoggerEnrichmentConfiguration enrichmentConfiguration,
+            LogEventLevel minLevel)
+        {
+            return enrichmentConfiguration.WithSitecoreContext(config => { config.MinLevel = minLevel; });
+        }
         
         public static LoggerConfiguration WithSitecoreContext(
             this LoggerEnrichmentConfiguration enrichmentConfiguration, Action<SitecoreContextEnricherOptions> extend, SitecoreContextEnricherOptions? options = null)

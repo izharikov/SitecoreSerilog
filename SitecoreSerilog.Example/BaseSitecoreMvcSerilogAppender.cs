@@ -24,13 +24,18 @@ namespace SitecoreSerilog.Example
                     .Enrich.WithMemoryUsage()
                     .Enrich.WithSitecoreContext(options =>
                     {
+                        // configure min log level: 
                         options.MinLevel = LogEventLevel.Error;
+                        // extend default enrich object:
                         options
+                            // add current Sitecore MVC page context
                             .WithItem("PageItem", () => PageContext.CurrentOrNull?.Item)
+                            // add current rendering datasource
                             .WithItem("Datasource", () => RenderingContext.CurrentOrNull?.Rendering?.Item)
                             .WithContextOption(Constants.OptionNames.Context,
                                 context =>
                                 {
+                                    // add current RenderingId
                                     context.WithProperty("RenderingId",
                                         () => RenderingContext.CurrentOrNull?.Rendering?.Id.ToString());
                                 })
