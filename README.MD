@@ -1,5 +1,5 @@
 # Sitecore Serilog
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/izharikov/SitecoreSerilog/dotnet.yml)](https://github.com/izharikov/SitecoreSend/actions/workflows/dotnet.yml)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/izharikov/SitecoreSerilog/dotnet.yml)](https://github.com/izharikov/SitecoreSerilog/actions/workflows/dotnet.yml)
 
 [![NuGet Version](https://img.shields.io/nuget/v/SitecoreSerilog)](https://www.nuget.org/packages/SitecoreSerilog)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/SitecoreSerilog)](https://www.nuget.org/packages/SitecoreSerilog)
