@@ -16,8 +16,8 @@ Provides [Serilog](https://github.com/serilog/serilog) appender for Sitecore.
 ### SEQ Example
 You can see how your log event with exception details could look like (in [SEQ](https://datalust.co/seq)):
 
-![seq example 1](./assets/images/seq_example_1.png)
-![seq example 2](./assets/images/seq_example_2.png)
+![seq example 1](https://raw.githubusercontent.com/izharikov/SitecoreSerilog/main/assets/images/seq_example_1.png)
+![seq example 2](https://raw.githubusercontent.com/izharikov/SitecoreSerilog/main/assets/images/seq_example_2.png)
 
 ## Usage
 See [examples](./SitecoreSerilog.Example) project for more details.
