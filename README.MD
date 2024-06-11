@@ -6,12 +6,21 @@
 
 Provides [Serilog](https://github.com/serilog/serilog) appender for Sitecore.
 
-## Usage
-See [examples](./SitecoreSerilog.Example) project for more details.
+## Features
+- Serilog integration in Sitecore
+- Use any [Sink](https://github.com/serilog/serilog/wiki/Provided-Sinks) from Serilog with Sitecore
+- Custom enricher for Sitecore context (like database, context item, page item, rendering, datasource, etc) in log event (with option to extend it)
+- Custom HTTP context enricher (currently HTTP method and URL are logged)
+- Add your custom enrichers
 
 ### SEQ Example
+You can see how your log event with exception details could look like (in [SEQ](https://datalust.co/seq)):
 
-[//]: # (// TODO: add screenshot)
+![seq example 1](./assets/images/seq_example_1.png)
+![seq example 2](./assets/images/seq_example_2.png)
+
+## Usage
+See [examples](./SitecoreSerilog.Example) project for more details.
 
 ### Appender
 Create a custom appender:
