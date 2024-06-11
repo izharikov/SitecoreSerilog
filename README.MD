@@ -1,10 +1,12 @@
-# Sitecore Serilog
+# Sitecore Serilog (Unofficial)
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/izharikov/SitecoreSerilog/dotnet.yml)](https://github.com/izharikov/SitecoreSerilog/actions/workflows/dotnet.yml)
 
 [![NuGet Version](https://img.shields.io/nuget/v/SitecoreSerilog)](https://www.nuget.org/packages/SitecoreSerilog)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/SitecoreSerilog)](https://www.nuget.org/packages/SitecoreSerilog)
 
 Provides [Serilog](https://github.com/serilog/serilog) appender for Sitecore.
+
+_Note_. This repository is unofficial private project and is not supported by Sitecore.
 
 ## Features
 - Serilog integration in Sitecore
