@@ -142,5 +142,55 @@ E.g. add additional items to Logger:
 .Enrich.WithHttpContext(LogEventLevel.Error)
 ```
 
+## Troubleshooting
+Use [`SelfLog`](https://github.com/serilog/serilog/wiki/Debugging-and-Diagnostics) from Serilog to troubleshoot issues.
+
+Can be configured in the following way:
+```csharp
+using Serilog.Core;
+using Serilog.Debugging;
+using SitecoreSerilog.Appenders;
+
+namespace SitecoreSerilog.Example
+{
+    public class TroubleshootingAppender : BaseSitecoreSerilogAppender
+    {
+        // all the required methods
+        
+        // called after Serilog logger configured
+        protected override void AfterActivateOptions(Logger logger)
+        {
+            base.AfterActivateOptions(logger);
+            // configure Serilog internal output into default Sitecore output (need to be configured once)
+            SelfLog.Enable(ErrorHandler.Error);
+        }
+    }
+}
+```
+
+Then in the default Sitecore `log.txt` file you can see if any issue occured. E.g.:
+```text
+2660 12:17:03 INFO  Trace: log4net:ERROR [SerilogAppender] 2024-06-11T10:17:03.2636440Z Exception while emitting periodic batch from Serilog.Sinks.Seq.SeqSink: System.AggregateException: One or more errors occurred. ---> System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: The remote name could not be resolved: '***********************'
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Serilog.Sinks.Seq.SeqSink.<EmitBatchAsync>d__13.MoveNext()
+   --- End of inner exception stack trace ---
+   at System.Threading.Tasks.Task.ThrowIfExceptional(Boolean includeTaskCanceledExceptions)
+   at System.Threading.Tasks.Task.Wait(Int32 millisecondsTimeout, CancellationToken cancellationToken)
+   at Serilog.Sinks.PeriodicBatching.PeriodicBatchingSink.EmitBatch(IEnumerable`1 events)
+   at Serilog.Sinks.PeriodicBatching.PeriodicBatchingSink.OnTick()
+---> (Inner Exception #0) System.Net.Http.HttpRequestException: An error occurred while sending the request. ---> System.Net.WebException: The remote name could not be resolved: 'logging-seq.dev.apebs.de'
+   at System.Net.HttpWebRequest.EndGetRequestStream(IAsyncResult asyncResult, TransportContext& context)
+   at System.Net.Http.HttpClientHandler.GetRequestStreamCallback(IAsyncResult ar)
+   --- End of inner exception stack trace ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at Serilog.Sinks.Seq.SeqSink.<EmitBatchAsync>d__13.MoveNext()<---
+
+```
+
 ## Contribute / Bug / Help
 You can contact me via email or in Sitecore Slack: `zharikovigor97@gmail.com`. Or please open an [issue](https://github.com/izharikov/SitecoreSerilog/issues/new).

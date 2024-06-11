@@ -1,4 +1,6 @@
 ﻿using Serilog;
+using Serilog.Core;
+using Serilog.Debugging;
 using Serilog.Events;
 using Sitecore.Configuration;
 using SitecoreSerilog.Appenders;
@@ -46,6 +48,12 @@ namespace SitecoreSerilog.Example
         protected override bool ValidateConfiguration()
         {
             return !string.IsNullOrEmpty(SeqHost);
+        }
+
+        protected override void AfterActivateOptions(Logger logger)
+        {
+            base.AfterActivateOptions(logger);
+            SelfLog.Enable(ErrorHandler.Error);
         }
     }
 }
